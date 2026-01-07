@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Show Categories</title>
+</head>
+<body>
+
+  <h1>Simple Reading from an Object</h1>
+  <h2>Selecting Show based on Category</h2>
+
+  <label>
+    Select A Category:
+    <select id="showCat">
+      <option value="All">All</option>
+      <option value="Drama">Drama</option>
+      <option value="Comedy">Comedy</option>
+      <option value="Sci-Fi">Sci-Fi</option>
+      <option value="Anime">Anime</option>
+    </select>
+  </label>
+
+  <br><br>
+
+  <button onclick="getShows()">Get Shows</button>
+  <button onclick="delShows()">Delete Shows</button>
+
+  <br><br>
+
+  <table border="1" id="results"></table>
+
+  <p id="count"></p>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

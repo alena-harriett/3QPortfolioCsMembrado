@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Organization Sign-ups</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(180deg, #51bff2 0%, #ffffff 50%, #76d063 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+        h2 { color: #005a9e; border-bottom: 2px solid #76d063; padding-bottom: 10px; }
+        
+        .controls { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        
+        select { padding: 10px; border-radius: 5px; border: 1px solid #008cba; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #008cba; color: white; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        tr:hover { background-color: #f1f9ff; }
+
+        .total-box {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e7d32;
+            text-align: right;
+        }
+
+        .back-link { display: inline-block; margin-top: 20px; color: #008cba; text-decoration: none; font-weight: bold; }
+        .back-link:hover { text-decoration: underline; }
+
+        .empty-msg { padding: 40px; text-align: center; color: #888; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Club Membership Archive</h2>
+
+    <div class="controls">
+        <label>Filter by Club: 
+            <select id="clubFilter" onchange="renderTable()">
+                <option value="ALL">ALL CLUBS</option>
+                <option value="Ellipsis">Ellipsis</option>
+                <option value="Himig Agham">Himig Agham</option>
+                <option value="Kamalayan">Kamalayan</option>
+                <option value="Likha">Likha</option>
+                <option value="Sightlines">Sightlines</option>
+            </select>
+        </label>
+    </div>
+
+    <div id="tableOutput">
+        </div>
+
+    <div class="total-box" id="totalCount"></div>
+
+    <a href="Q3_3GCesiumMembrado.html" class="back-link">← Back to Registration Form</a>
+</div>
+
+<script>
+    // Main function to read localStorage and display data
+    function renderTable() {
+        const filterValue = document.getElementById('clubFilter').value;
+        const tableContainer = document.getElementById('tableOutput');
+        const countContainer = document.getElementById('totalCount');
+        
+        // Retrieve and parse data from localStorage
+        const rawData = localStorage.getItem('clubData');
+        const allEntries = JSON.parse(rawData) || [];
+
+        // Check if localStorage is completely empty
+        if (allEntries.length === 0) {
+            tableContainer.innerHTML = "<p class='empty-msg'>No applications found in system storage.</p>";
+            countContainer.textContent = "";
+            return;
+        }
+
+        // Filter logic: if "ALL", keep everything; otherwise, match the clubChoice
+        const filteredEntries = filterValue === "ALL" 
+            ? allEntries 
+            : allEntries.filter(entry => entry.clubChoice === filterValue);
+
+        // If a club is selected but has no signups
+        if (filteredEntries.length === 0) {
+            tableContainer.innerHTML = `<p class='empty-msg'>No sign-ups recorded for the club: <b>${filterValue}</b>.</p>`;
+            countContainer.textContent = "Total Sign-ups: 0";
+            return;
+        }
+
+        // Building the HTML table string
+        let tableHtml = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Number</th>
+                        <th>Name</th>
+                        <th>Club</th>
+                        <th>Grade</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        // Loop through filtered results to add rows
+        filteredEntries.forEach(entry => {
+            tableHtml += `
+                <tr>
+                    <td>${entry.studentID}</td>
+                    <td>${entry.fullName}</td>
+                    <td>${entry.clubChoice}</td>
+                    <td>${entry.grade}</td>
+                    <td>${entry.email}</td>
+                </tr>
+            `;
+        });
+
+        tableHtml += "</tbody></table>";
+        
+        // Output the results to the page
+        tableContainer.innerHTML = tableHtml;
+        countContainer.textContent = `Total Sign-ups: ${filteredEntries.length}`;
+    }
+
+    // Run display logic when the page first loads
+    window.onload = renderTable;
+</script>
+
+</body>
+</html>

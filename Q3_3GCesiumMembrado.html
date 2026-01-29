@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Application - Sign Up</title>
+    <style>
+        /* Frutiger Aero Inspired Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(180deg, #51bff2 0%, #ffffff 50%, #76d063 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        form {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.6);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        fieldset {
+            border: 1px solid #abdcfb;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #005a9e;
+            padding: 0 10px;
+        }
+
+        label { display: block; margin-bottom: 15px; font-size: 14px; color: #333; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .row { display: flex; gap: 10px; }
+
+        input[type="submit"], input[type="reset"], .nav-btn {
+            flex: 1;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            padding: 12px;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.2s, filter 0.2s;
+            /* Glossy effect */
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        input[type="submit"] { background: linear-gradient(to bottom, #8beb78 0%, #69c357 44%, #46aa32 100%); border: 1px solid #60b74f;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8);
+            transition: all 0.2s ease;}
+        input[type="reset"] { background: linear-gradient(to bottom, #9fccf9 0%, #60abf8 44%, #4096ee 100%); border: 1px solid #1a73e8;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8);
+            transition: all 0.2s ease;}
+        .nav-btn { background: linear-gradient(to bottom, #ffffff 0%, #c0c0c0 44%, #b7b7b7 100%); border: 1px solid #7d7d7d;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.8);
+            transition: all 0.2s ease;}
+
+        input:hover, .nav-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+        .empty-field { border: 2px solid #ff0000 !important; background-color: #fff0f0 !important; }
+    </style>
+</head>
+<body>
+
+    <form id="signupForm" onsubmit="return handleFormSubmit(event)" onreset="return confirmReset()">
+
+        <fieldset>
+            <legend>Personal Information</legend>
+            <label>Student ID: <input type="number" name="studentID" required onblur="validateField(this)"></label>
+            <label>Full Name: <input type="text" name="fullName" required onblur="validateField(this)"></label>
+            <label>Birthday: <input type="date" name="birthday" required onblur="validateField(this)"></label>
+            <label>Email Address: <input type="email" name="email" required onblur="validateField(this)"></label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Club Membership Details</legend>
+            <label>Mobile phone: <input type="text" name="mobile" required onblur="validateField(this)"></label>
+            <label>Grade Level:
+                <select name="gradeLevel" required>
+                    <option value="">--Select Grade--</option>
+                    <option value="7">Grade 7</option>
+                    <option value="8">Grade 8</option>
+                    <option value="9">Grade 9</option>
+                    <option value="10">Grade 10</option>
+                    <option value="11">Grade 11</option> 
+                    <option value="12">Grade 12</option>
+                </select>
+            </label>
+            <label>Preferred Club:
+                <select name="clubChoice" id="clubChoice" required>
+                    <option value="">--Choose a Club--</option>
+                    <option value="Ellipsis">Ellipsis</option>
+                    <option value="Himig Agham">Himig Agham</option>
+                    <option value="Kamalayan">Kamalayan</option>
+                    <option value="Likha">Likha</option>
+                    <option value="Sightlines">Sightlines</option>
+                </select>
+            </label>
+            <label>Why do you want to join?
+                <textarea name="reason" rows="3" required onblur="validateField(this)"></textarea>
+            </label>
+        </fieldset>
+
+        <div class="button-group">
+            <div class="row">
+                <input type="submit" value="Submit Application">
+                <input type="reset" value="Clear Form">
+            </div>
+            <a href="viewSignUps.html" class="nav-btn">View All Signups</a>
+        </div>
+    </form>
+
+    <script>
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            if (confirm("Are you sure you want to submit your application?")) {
+                const form = event.target;
+                
+                const newEntry = {
+                    studentID: form.studentID.value,
+                    fullName: form.fullName.value,
+                    clubChoice: form.clubChoice.value,
+                    email: form.email.value,
+                    grade: form.gradeLevel.value
+                };
+
+                let currentSignups = JSON.parse(localStorage.getItem('clubData')) || [];
+
+                currentSignups.push(newEntry);
+
+                localStorage.setItem('clubData', JSON.stringify(currentSignups));
+
+                alert("Successfully Registered!");
+                form.reset();
+            }
+            return false;
+        }
+
+        function confirmReset() {
+            return confirm("This will clear all your progress. Proceed?");
+        }
+
+        function validateField(element) {
+            if (element.value.trim() === "") {
+                element.classList.add("empty-field");
+            } else {
+                element.classList.remove("empty-field");
+            }
+        }
+    </script>
+</body>
+</html>

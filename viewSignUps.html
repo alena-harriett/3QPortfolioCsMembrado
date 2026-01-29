@@ -74,36 +74,30 @@
 </div>
 
 <script>
-    // Main function to read localStorage and display data
     function renderTable() {
         const filterValue = document.getElementById('clubFilter').value;
         const tableContainer = document.getElementById('tableOutput');
         const countContainer = document.getElementById('totalCount');
         
-        // Retrieve and parse data from localStorage
         const rawData = localStorage.getItem('clubData');
         const allEntries = JSON.parse(rawData) || [];
 
-        // Check if localStorage is completely empty
         if (allEntries.length === 0) {
             tableContainer.innerHTML = "<p class='empty-msg'>No applications found in system storage.</p>";
             countContainer.textContent = "";
             return;
         }
 
-        // Filter logic: if "ALL", keep everything; otherwise, match the clubChoice
         const filteredEntries = filterValue === "ALL" 
             ? allEntries 
             : allEntries.filter(entry => entry.clubChoice === filterValue);
 
-        // If a club is selected but has no signups
         if (filteredEntries.length === 0) {
             tableContainer.innerHTML = `<p class='empty-msg'>No sign-ups recorded for the club: <b>${filterValue}</b>.</p>`;
             countContainer.textContent = "Total Sign-ups: 0";
             return;
         }
 
-        // Building the HTML table string
         let tableHtml = `
             <table>
                 <thead>
@@ -118,7 +112,6 @@
                 <tbody>
         `;
 
-        // Loop through filtered results to add rows
         filteredEntries.forEach(entry => {
             tableHtml += `
                 <tr>
@@ -133,12 +126,10 @@
 
         tableHtml += "</tbody></table>";
         
-        // Output the results to the page
         tableContainer.innerHTML = tableHtml;
         countContainer.textContent = `Total Sign-ups: ${filteredEntries.length}`;
     }
-
-    // Run display logic when the page first loads
+    
     window.onload = renderTable;
 </script>
 

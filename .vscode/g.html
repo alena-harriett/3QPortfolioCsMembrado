@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #333;
+            padding: 0 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; 
+            transition: all 0.3s ease;
+        }
+
+        /* Part C: :focus pseudo-class */
+        input:focus, select:focus, textarea:focus {
+            border-color: #4CAF50;
+            background-color: #f9fff9;
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="submit"], input[type="reset"] {
+            flex: 1;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            padding: 10px;
+            color: white;
+        }
+
+        input[type="submit"] { background-color: #4CAF50; }
+        input[type="submit"]:hover { background-color: #45a049; }
+
+        input[type="reset"] { background-color: #f44336; }
+        input[type="reset"]:hover { background-color: #da190b; }
+
+        /* Style for Part B onblur requirement */
+        .empty-field {
+            border: 2px solid #ff0000 !important;
+            background-color: #fff0f0 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <form method="post" action="submit" 
+          onsubmit="return confirmSubmission()" 
+          onreset="return confirmReset()">
+
+        <fieldset>
+            <legend>Personal Information</legend>
+            
+            <label>Student ID:
+                <input type="number" name="studentID" required onblur="validateField(this)">
+            </label>
+
+            <label>Full Name:
+                <input type="text" name="fullName" required onblur="validateField(this)">
+            </label>
+
+            <label>Birthday:
+                <input type="date" name="birthday" required onblur="validateField(this)">
+            </label>
+
+            <label>Email Address:
+                <input type="email" name="email" required onblur="validateField(this)">
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Club Membership Details</legend>
+
+            <label>Mobile Phone:
+                <input type="text" name="mobile" required onblur="validateField(this)">
+            </label>
+
+            <label>Grade Level:
+                <select name="gradeLevel" required>
+                    <option value="">--Select Grade--</option>
+                    <option value="LVL_11">Grade 11</option> <option value="LVL_12">Grade 12</option>
+                    <option value="COL_1">Freshman</option>
+                </select>
+            </label>
+
+            <label>Applicant Type: <br>
+                <input type="radio" name="membership" value="INT_MEM" required style="width: auto;"> Intern
+                <input type="radio" name="membership" value="EXT_MEM" required style="width: auto;"> Extern
+            </label>
+
+            <label>Preferred Organization / Club:
+                <select name="clubChoice" required>
+                    <option value="">--Choose a Club--</option>
+                    <option value="MUS_01">Himig Agham</option>
+                    <option value="ACT_02">Kamalayan</option>
+                    <option value="ART_03">Likha</option>
+                    <option value="SOD_04">Sapienara</option>
+                    <option value="ACT_05">Sightlines</option>
+
+                </select>
+            </label>
+
+            <label>Why do you want to join?
+                <textarea name="reason" rows="4" required onblur="validateField(this)"></textarea>
+            </label>
+        </fieldset>
+
+        <div class="button-group">
+            <input type="submit" value="Submit Application">
+            <input type="reset" value="Clear Form">
+        </div>
+    </form>
+
+    <script>
+        
+        function confirmSubmission() {
+            return confirm("Are you sure you want to submit your application to the organization?");
+        }
+
+        function confirmReset() {
+            return confirm("This will clear all your progress. Do you wish to proceed?");
+        }
+
+        function validateField(element) {
+            if (element.value.trim() === "") {
+                element.classList.add("empty-field");
+            } else {
+                element.classList.remove("empty-field");
+            }
+        }
+    </script>
+
+</body>
+</html>
